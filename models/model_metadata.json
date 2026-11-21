@@ -1,0 +1,14 @@
+{
+  "model_name": "MobileNetV2_FineTuned",
+  "num_classes": 37,
+  "top1_accuracy": 0.924,
+  "top3_accuracy": 0.986,
+  "macro_f1": 0.923,
+  "input_size": [
+    3,
+    224,
+    224
+  ],
+  "weights_status": "colab_trained_checkpoint_ready",
+  "export_date": "2026-11-17"
+}

@@ -1,0 +1,4 @@
+Model Architecture,Top-1 Accuracy (%),Top-3 Accuracy (%),Macro Precision,Macro Recall,Macro F1-Score,Weighted F1-Score,Inference Latency (ms),Total Parameters (M),Model Disk Size (MB)
+1. Custom CNN (From Scratch),58.4,79.2,0.591,0.584,0.578,0.582,6.2,1.4,5.6
+2. MobileNetV2 (Transfer Learning),92.4,98.6,0.925,0.924,0.923,0.924,14.1,2.8,14.2
+3. Vision Transformer (ViT-B/16),93.1,98.9,0.932,0.931,0.93,0.931,44.8,86.2,340.5

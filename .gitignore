@@ -1,0 +1,45 @@
+# ============================================
+# PetVision AI - Git Ignore Configuration
+# ============================================
+
+# ----- Dataset (Too large for GitHub, 783 MB) -----
+dataset/
+
+# ----- Trained Model Weights (Large binary files) -----
+models/*.pth
+models/*.pt
+models/*.h5
+models/*.onnx
+
+# ----- Python Cache & Bytecode -----
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# ----- Jupyter Notebook Checkpoints -----
+.ipynb_checkpoints/
+
+# ----- Virtual Environments -----
+venv/
+env/
+.venv/
+
+# ----- IDE & Editor Settings -----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ----- OS Generated Files -----
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# ----- Streamlit Cache -----
+.streamlit/
+
+# ----- Temporary & Scratch Files -----
+*.tmp
+*.log
