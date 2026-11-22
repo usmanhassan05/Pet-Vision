@@ -14,6 +14,38 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+# ----------------- PATH HELPERS FOR DEPLOYMENT -----------------
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, ".."))
+
+def resolve_file(rel_path: str) -> str:
+    """Finds path whether running locally, inside app directory, or in cloud container."""
+    candidates = [
+        rel_path,
+        os.path.join(APP_DIR, rel_path),
+        os.path.join(PROJECT_ROOT, rel_path),
+        os.path.join(APP_DIR, os.path.basename(rel_path)),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+    return rel_path
+
+def get_sample_image(breed: str) -> str:
+    """Finds sample image in app/samples or dataset."""
+    candidates = [
+        os.path.join(APP_DIR, "samples", f"{breed}_1.jpg"),
+        os.path.join(PROJECT_ROOT, "app", "samples", f"{breed}_1.jpg"),
+        os.path.join("app", "samples", f"{breed}_1.jpg"),
+        os.path.join("samples", f"{breed}_1.jpg"),
+        f"dataset/images/images/{breed}_1.jpg",
+        os.path.join(PROJECT_ROOT, "dataset", "images", "images", f"{breed}_1.jpg"),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+    return ""
+
 # ----------------- PAGE CONFIG -----------------
 st.set_page_config(
     page_title="PetVision AI | Breed Identification System",
@@ -178,7 +210,7 @@ BREED_INFO = {
 # ----------------- LOAD MAPPINGS -----------------
 @st.cache_resource
 def get_class_metadata():
-    mapping_path = os.path.join("results", "class_mappings.json")
+    mapping_path = resolve_file(os.path.join("results", "class_mappings.json"))
     if os.path.exists(mapping_path):
         with open(mapping_path, "r") as f:
             data = json.load(f)
@@ -327,8 +359,8 @@ with st.sidebar:
     if chosen_lookup:
         sp = breed_to_species.get(chosen_lookup, "Cat")
         st.caption(f"**{chosen_lookup.replace('_', ' ').title()}** ({sp})")
-        sample_path_quick = f"dataset/images/images/{chosen_lookup}_1.jpg"
-        if os.path.exists(sample_path_quick):
+        sample_path_quick = get_sample_image(chosen_lookup)
+        if sample_path_quick and os.path.exists(sample_path_quick):
             st.image(sample_path_quick, width=220)
 
     st.divider()
@@ -395,18 +427,18 @@ with tab1:
         if input_type == "🌟 Instant Sample Gallery":
             st.markdown("Select any pre-loaded pet image:")
             sample_dict = {
-                "🐱 Persian Cat": "dataset/images/images/Persian_1.jpg",
-                "🐶 Beagle Dog": "dataset/images/images/beagle_1.jpg",
-                "🐱 Bengal Cat": "dataset/images/images/Bengal_1.jpg",
-                "🐶 Pug Dog": "dataset/images/images/pug_1.jpg",
-                "🐱 Sphynx Cat": "dataset/images/images/Sphynx_1.jpg",
-                "🐶 Boxer Dog": "dataset/images/images/boxer_1.jpg",
-                "🐱 Ragdoll Cat": "dataset/images/images/Ragdoll_1.jpg",
-                "🐶 Saint Bernard": "dataset/images/images/saint_bernard_1.jpg",
-                "🐶 Chihuahua Dog": "dataset/images/images/chihuahua_1.jpg",
-                "🐱 Siamese Cat": "dataset/images/images/Siamese_1.jpg"
+                "🐱 Persian Cat": get_sample_image("Persian"),
+                "🐶 Beagle Dog": get_sample_image("beagle"),
+                "🐱 Bengal Cat": get_sample_image("Bengal"),
+                "🐶 Pug Dog": get_sample_image("pug"),
+                "🐱 Sphynx Cat": get_sample_image("Sphynx"),
+                "🐶 Boxer Dog": get_sample_image("boxer"),
+                "🐱 Ragdoll Cat": get_sample_image("Ragdoll"),
+                "🐶 Saint Bernard": get_sample_image("saint_bernard"),
+                "🐶 Chihuahua Dog": get_sample_image("chihuahua"),
+                "🐱 Siamese Cat": get_sample_image("Siamese")
             }
-            avail_samples = {k: v for k, v in sample_dict.items() if os.path.exists(v)}
+            avail_samples = {k: v for k, v in sample_dict.items() if v and os.path.exists(v)}
             
             if avail_samples:
                 sample_key = st.selectbox("Choose pet:", list(avail_samples.keys()))
@@ -570,8 +602,8 @@ with tab2:
     
     c_left, c_right = st.columns([1, 1.4], gap="large")
     with c_left:
-        sample_img_file = f"dataset/images/images/{chosen_breed}_1.jpg"
-        if os.path.exists(sample_img_file):
+        sample_img_file = get_sample_image(chosen_breed)
+        if sample_img_file and os.path.exists(sample_img_file):
             st.image(sample_img_file, caption=f"Representative Sample: {chosen_breed.replace('_', ' ').title()}", use_container_width=True)
             
     with c_right:
@@ -647,7 +679,7 @@ with tab4:
     st.divider()
 
     # Comparison Table
-    table_path = os.path.join("results", "model_comparison_table.csv")
+    table_path = resolve_file(os.path.join("results", "model_comparison_table.csv"))
     if os.path.exists(table_path):
         df_comp = pd.read_csv(table_path)
         st.markdown("#### Comprehensive Architectural Evaluation Table")
@@ -658,26 +690,26 @@ with tab4:
     
     row1_c1, row1_c2 = st.columns(2)
     with row1_c1:
-        acc_plot = os.path.join("results", "model_accuracy_comparison.png")
+        acc_plot = resolve_file(os.path.join("results", "model_accuracy_comparison.png"))
         if os.path.exists(acc_plot):
             st.image(acc_plot, caption="Figure 1: Accuracy Benchmark across Architectures", use_container_width=True)
     with row1_c2:
-        tradeoff_plot = os.path.join("results", "efficiency_tradeoff.png")
+        tradeoff_plot = resolve_file(os.path.join("results", "efficiency_tradeoff.png"))
         if os.path.exists(tradeoff_plot):
             st.image(tradeoff_plot, caption="Figure 2: Efficiency Frontier (Accuracy vs. Latency)", use_container_width=True)
 
     row2_c1, row2_c2 = st.columns(2)
     with row2_c1:
-        curve_plot = os.path.join("results", "loss_acc_curves_mobilenet.png")
+        curve_plot = resolve_file(os.path.join("results", "loss_acc_curves_mobilenet.png"))
         if os.path.exists(curve_plot):
             st.image(curve_plot, caption="Figure 3: Training & Validation Loss / Accuracy Curves", use_container_width=True)
     with row2_c2:
-        conf_plot = os.path.join("results", "most_confused_breeds.png")
+        conf_plot = resolve_file(os.path.join("results", "most_confused_breeds.png"))
         if os.path.exists(conf_plot):
             st.image(conf_plot, caption="Figure 4: Most Confused Breed Pairs (Error Analysis)", use_container_width=True)
 
     # High-Res Confusion Matrix
-    cm_plot = os.path.join("results", "confusion_matrix_mobilenet.png")
+    cm_plot = resolve_file(os.path.join("results", "confusion_matrix_mobilenet.png"))
     if os.path.exists(cm_plot):
         with st.expander("🔍 View Full 37×37 Seaborn Confusion Matrix Heatmap"):
             st.image(cm_plot, caption="Figure 5: High-Resolution Seaborn Confusion Matrix across 37 Breeds", use_container_width=True)

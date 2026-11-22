@@ -1,3 +1,15 @@
+---
+title: PetVision AI Breed Identifier
+emoji: 🐾
+colorFrom: blue
+colorTo: indigo
+sdk: streamlit
+sdk_version: 1.33.0
+app_file: app.py
+pinned: false
+license: mit
+---
+
 # PetVision AI: Cat & Dog Breed Identification System 🐾
 
 [![Course: AIC354](https://img.shields.io/badge/Course-AIC354%20Machine%20Learning-blue.svg)](https://lahore.comsats.edu.pk/)
@@ -16,7 +28,7 @@
 
 ## 🌐 Live Web Application & Repository Links
 - **🚀 Live Cloud Web Application:** `https://petvision-ai.streamlit.app` *(Streamlit Cloud / Hugging Face Spaces)*
-- **📂 GitHub Code Repository:** `https://github.com/<your-username>/PetVision-AI`
+- **📂 GitHub Code Repository:** `https://github.com/usmanhassan05/Pet-Vision`
 
 ---
 
