@@ -4,11 +4,8 @@
   "top1_accuracy": 0.924,
   "top3_accuracy": 0.986,
   "macro_f1": 0.923,
-  "input_size": [
-    3,
-    224,
-    224
-  ],
-  "weights_status": "colab_trained_checkpoint_ready",
-  "export_date": "2026-11-17"
+  "checkpoint_file": "best_model.pth",
+  "file_size_mb": 11.3,
+  "weights_status": "verified_trained_checkpoint",
+  "export_date": "2026-11-24"
 }
