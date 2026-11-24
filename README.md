@@ -27,8 +27,8 @@ license: mit
 ---
 
 ## 🌐 Live Web Application & Repository Links
-- **🚀 Live Cloud Web Application:** `https://petvision-ai.streamlit.app` *(Streamlit Cloud / Hugging Face Spaces)*
-- **📂 GitHub Code Repository:** `https://github.com/usmanhassan05/Pet-Vision`
+- **🚀 Live Cloud Web Application:** [https://petvision-ai.streamlit.app/](https://petvision-ai.streamlit.app/) *(Hosted on Streamlit Community Cloud)*
+- **📂 GitHub Code Repository:** [https://github.com/usmanhassan05/Pet-Vision](https://github.com/usmanhassan05/Pet-Vision)
 
 ---
 
